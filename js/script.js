@@ -132,7 +132,7 @@ function initCanvasBackground() {
 
     draw() {
       const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-      ctx.fillStyle = isDark ? `rgba(16, 185, 129, ${this.alpha})` : `rgba(5, 150, 105, ${this.alpha})`;
+      ctx.fillStyle = isDark ? `rgba(32, 178, 170, ${this.alpha})` : `rgba(72, 202, 228, ${this.alpha})`;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fill();
@@ -157,8 +157,8 @@ function initCanvasBackground() {
 
         if (dist < 120) {
           const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-          const strokeAlpha = (1 - dist / 120) * 0.18;
-          ctx.strokeStyle = isDark ? `rgba(16, 185, 129, ${strokeAlpha})` : `rgba(5, 150, 105, ${strokeAlpha})`;
+          const strokeAlpha = (1 - dist / 120) * 0.2;
+          ctx.strokeStyle = isDark ? `rgba(32, 178, 170, ${strokeAlpha})` : `rgba(72, 202, 228, ${strokeAlpha})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);

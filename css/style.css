@@ -3,32 +3,32 @@
    ========================================================================== */
 
 :root {
-  /* Color Palette - Forest Green & Evergreen Cyber Tech Theme */
-  --bg-primary: #06140e;
-  --bg-secondary: #0c2017;
-  --bg-tertiary: #142e22;
-  --bg-card: rgba(12, 32, 23, 0.75);
-  --bg-card-hover: rgba(20, 46, 34, 0.9);
-  --glass-bg: rgba(12, 32, 23, 0.7);
-  --glass-border: rgba(52, 211, 153, 0.12);
-  --glass-border-hover: rgba(16, 185, 129, 0.45);
+  /* Color Palette - Very Dark Teal, Deep Slate Teal & Sea Green Theme */
+  --bg-primary: #041318;       /* Very Dark Teal */
+  --bg-secondary: #0b2830;     /* Deep Slate Teal */
+  --bg-tertiary: #133d4a;      /* Deep Teal Base */
+  --bg-card: rgba(11, 40, 48, 0.78);
+  --bg-card-hover: rgba(19, 61, 74, 0.92);
+  --glass-bg: rgba(11, 40, 48, 0.72);
+  --glass-border: rgba(32, 178, 170, 0.18); /* Light Sea Green */
+  --glass-border-hover: rgba(72, 202, 228, 0.55); /* Medium Sky Blue */
 
-  /* Primary & Accent Gradients - Forest Green & Evergreen */
-  --accent-primary: #10b981;
-  --accent-secondary: #2dd4bf;
-  --accent-tertiary: #a3e635;
-  --accent-pink: #059669;
+  /* Primary & Accent Palette */
+  --accent-primary: #20b2aa;    /* Light Sea Green */
+  --accent-secondary: #48cae4;  /* Medium Sky Blue */
+  --accent-tertiary: #005f73;   /* Deep Teal */
+  --accent-slate: #2f4f4f;      /* Dark Slate Gray */
+  --accent-pink: #17c3b2;
   
-  --gradient-main: linear-gradient(135deg, #10b981 0%, #059669 50%, #2dd4bf 100%);
-  --gradient-accent: linear-gradient(135deg, #047857 0%, #a3e635 100%);
-  --gradient-glow: linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(45, 212, 191, 0.3) 100%);
+  --gradient-main: linear-gradient(135deg, #20b2aa 0%, #005f73 45%, #48cae4 100%);
+  --gradient-accent: linear-gradient(135deg, #0b2830 0%, #20b2aa 50%, #48cae4 100%);
+  --gradient-glow: linear-gradient(135deg, rgba(32, 178, 170, 0.35) 0%, rgba(72, 202, 228, 0.35) 100%);
   
   /* Text Colors */
-  --text-primary: #f0fdf4;
-  --text-secondary: #93c5fd;
-  --text-secondary: #a7f3d0;
-  --text-muted: #6ee7b7;
-  --text-glow: rgba(240, 253, 244, 0.9);
+  --text-primary: #f0fdfa;
+  --text-secondary: #ccfbf1;
+  --text-muted: #5eead4;
+  --text-glow: rgba(240, 253, 250, 0.9);
 
   /* Fonts */
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -46,8 +46,8 @@
   /* Transitions & Shadows */
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow-glow: 0 0 25px rgba(16, 185, 129, 0.3);
-  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 25px rgba(32, 178, 170, 0.35);
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.65);
 }
 
 /* Light Theme Variables */
