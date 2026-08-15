@@ -326,14 +326,14 @@ function initAnimatedCounters() {
 const projectDetailsData = {
   lifesaver: {
     title: 'LifeSaver AI',
-    subtitle: 'AI-Driven Healthcare Telemetry Platform',
+    subtitle: 'AI-Driven Smart Task Rescuing & Focus Coach',
     category: 'Hackathon Project',
-    tech: ['React', 'JavaScript', 'AWS Cloud', 'RESTful API', 'Telemetry Data'],
-    description: `LifeSaver AI is a cutting-edge web application engineered to bridge high-latency medical sensor telemetry with real-time responsive user dashboards. Built during a competitive hackathon, the system parses incoming telemetry stream arrays with minimal latency and displays real-time health updates.`,
+    tech: ['React', 'JavaScript', 'AWS Cloud', 'RESTful API', 'Supportive AI Vibe'],
+    description: `LifeSaver AI is a smart task management and focus rescue platform designed to reduce procrastination and last-minute stress. Featuring an empathetic AI coach named "Vibe", an interactive Urgency Heat Gauge, and real-time commitment tracking.`,
     highlights: [
-      'Engineered an AI-driven responsive web application using React and JavaScript for dynamic, real-time UI metrics.',
-      'Integrated third-party RESTful APIs to process real-time healthcare telemetry datasets with minimized network latency.',
-      'Architected deployment blueprints using AWS cloud infrastructure components to guarantee application stability and auto-scaling.'
+      'Engineered an AI-driven responsive web application using React and JavaScript for dynamic task urgency scoring.',
+      'Integrated "Vibe" supportive AI coach module to provide personalized encouragement and focus session adjustments.',
+      'Architected deployment blueprints using AWS cloud infrastructure components with low-latency API integration.'
     ],
     github: 'https://github.com/Pramod3570955',
     image: 'assets/images/lifesaver_ai.jpg'
@@ -343,7 +343,7 @@ const projectDetailsData = {
     subtitle: 'Java & MySQL Inventory & Project ERP',
     category: 'Academic Project',
     tech: ['Java', 'MySQL', 'OOP Principles', 'Schema Design', 'Data Validation'],
-    description: `A enterprise resource management software tailored for construction sites and localized material inventory tracking. Built following robust Object-Oriented Programming (OOP) principles in Java, coupled with a relational MySQL database structure.`,
+    description: `An enterprise resource management software tailored for construction sites and localized material inventory tracking. Built following robust Object-Oriented Programming (OOP) principles in Java, coupled with a relational MySQL database structure.`,
     highlights: [
       'Designed a comprehensive management solution executing Object-Oriented Programming (OOP) paradigms inside Java.',
       'Programmed a secure database schema using MySQL to handle complex tabular structures, transactions, and resource allocations.',
@@ -353,15 +353,15 @@ const projectDetailsData = {
     image: 'assets/images/construction.jpg'
   },
   weather: {
-    title: 'Weather Application',
+    title: 'SkyGuru Weather',
     subtitle: 'C++ Computation Engine + React Frontend Integration',
     category: 'Personal Project',
-    tech: ['C++', 'React', 'REST APIs', 'JSON Parsing', 'Low-Level Algorithms'],
-    description: `A unique multi-tiered weather telemetry application that pairs a high-performance backend algorithm written in low-level C++ for JSON payload parsing and metric computation with an interactive, modern React hooks web frontend.`,
+    tech: ['React', 'C++', 'REST APIs', 'World Radar', 'Celestial Cycle'],
+    description: `SkyGuru is an advanced weather analytics platform created by Pramod Shah. It pairs high-performance low-level C++ geolocation string payload parsing with an interactive React frontend showcasing live weather radar, celestial cycles (Sun & Moon), hourly/7-day forecasts, and real-time precipitation metrics.`,
     highlights: [
       'Conceptualized a multi-tiered architecture linking frontend React hooks directly to backend C++ parsing computation metrics.',
-      'Constructed automated algorithms to handle geolocation JSON string parsing payload arrays natively inside low-level data blocks.',
-      'Delivered instantaneous weather metrics rendering and geographical radar coordinate translation.'
+      'Implemented real-time world location radar, celestial sun/moon cycle tracking, and detailed hourly weather metrics.',
+      'Constructed automated algorithms to handle geolocation JSON string parsing payload arrays natively inside low-level data blocks.'
     ],
     github: 'https://github.com/Pramod3570955',
     image: 'assets/images/weather_app.jpg'
