@@ -339,15 +339,15 @@ const projectDetailsData = {
     image: 'assets/images/lifesaver_ai.jpg'
   },
   construction: {
-    title: 'Construction Building Software',
-    subtitle: 'Java & MySQL Inventory & Project ERP',
+    title: 'Building Construction Planner',
+    subtitle: 'Enterprise Management Workspace & EVM Analytics',
     category: 'Academic Project',
-    tech: ['Java', 'MySQL', 'OOP Principles', 'Schema Design', 'Data Validation'],
-    description: `An enterprise resource management software tailored for construction sites and localized material inventory tracking. Built following robust Object-Oriented Programming (OOP) principles in Java, coupled with a relational MySQL database structure.`,
+    tech: ['Java', 'MySQL', 'OOP Principles', 'EVM Analytics', 'BIM & Stock Alerts'],
+    description: `An enterprise executive command dashboard tailored for construction site operations and multi-project management. Features real-time progress telemetry, EVM S-Curve cost analytics, risk matrix heatmaps, stock reorder threshold alerts, and site milestone scheduling.`,
     highlights: [
-      'Designed a comprehensive management solution executing Object-Oriented Programming (OOP) paradigms inside Java.',
-      'Programmed a secure database schema using MySQL to handle complex tabular structures, transactions, and resource allocations.',
-      'Formulated structural data validation modules to cross-verify resource quantities, optimizing localized inventory tracking.'
+      'Designed a comprehensive Executive Command Dashboard executing OOP paradigms and modular Java backend logic.',
+      'Programmed secure database schemas in MySQL to handle complex tabular structures, EVM financial metrics, and stock alerts.',
+      'Formulated structural data validation modules to cross-verify resource quantities, material reorders, and milestone schedules.'
     ],
     github: 'https://github.com/Pramod3570955',
     image: 'assets/images/construction.jpg'
