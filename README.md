@@ -1,7 +1,7 @@
 # Pramod Kumar Shah Sudi - Developer Portfolio
 
 [![Portfolio Status](https://img.shields.io/badge/Status-Live-emerald?style=for-the-badge)](https://Pramod3570955.github.io/portfolio/)
-[![LeetCode](https://img.shields.io/badge/LeetCode-150%2B_Solved-ffa116?style=for-the-badge&logo=leetcode)](https://leetcode.com/u/Pramod955)
+[![LeetCode](https://img.shields.io/badge/LeetCode-200%2B_Solved-ffa116?style=for-the-badge&logo=leetcode)](https://leetcode.com/u/Pramod955)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Pramod_Shah-0077b5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/pramod-shah-6b8b983b0)
 [![GitHub](https://img.shields.io/badge/GitHub-Pramod3570955-181717?style=for-the-badge&logo=github)](https://github.com/Pramod3570955)
 
@@ -16,7 +16,7 @@ Welcome to the official portfolio website repository of **Pramod Kumar Shah Sudi
 - **Modern Glassmorphic UI/UX**: Designed with dark cyber tech aesthetics, responsive CSS grid/flex layouts, and Google Fonts (Outfit, Plus Jakarta Sans, Fira Code).
 - **Interactive Typing & Canvas Background**: HTML5 particle matrix background and dynamic typewriter effects.
 - **Skills & Category Filter**: Interactive filtering for Languages, Web Dev, Cloud & DB, and Core Competencies with animated progress indicators.
-- **Competitive Programming Dashboard**: Showcase for 150+ solved LeetCode problems (Arrays, Two Pointers, Trees, Strings), HackerRank 50+ logic badges, and Coding Ninjas hackathons.
+- **Competitive Programming Dashboard**: Showcase for 200+ solved LeetCode problems (Arrays, Two Pointers, Trees, Strings), HackerRank 50+ logic badges, and Coding Ninjas hackathons.
 - **Project Detail Modals**: Interactive modals detailing architectural blueprints and source links for hackathon, academic, and personal projects.
 - **Interactive Resume Viewer**: Embedded modal viewer with print/download capabilities.
 - **Light / Dark Mode**: Persistent theme switcher using local storage.

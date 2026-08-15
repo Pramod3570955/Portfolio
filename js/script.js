@@ -54,7 +54,7 @@ function initTypingEffect() {
 
   const phrases = [
     'Full-Stack Web Developer',
-    'LeetCode 150+ Solved | DSA Explorer',
+    'LeetCode 200+ Solved | DSA Explorer',
     'Java & C++ Problem Solver',
     'Cloud & AWS Infrastructure Enthusiast',
     'B.Tech CSE @ Parul University'
