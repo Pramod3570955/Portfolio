@@ -336,6 +336,7 @@ const projectDetailsData = {
       'Architected deployment blueprints using AWS cloud infrastructure components with low-latency API integration.'
     ],
     github: 'https://github.com/Pramod3570955',
+    liveDemo: 'https://lifesaver-ai-532111624600.asia-southeast1.run.app/',
     image: 'assets/images/lifesaver_ai.jpg'
   },
   construction: {
@@ -383,7 +384,9 @@ function initProjectModals() {
         <div style="margin-top: 1rem;">
           <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: var(--accent-secondary); letter-spacing: 1px;">${data.category}</span>
           <h2 style="font-size: 2rem; margin: 0.4rem 0 1rem 0;">${data.title}</h2>
-          <img src="${data.image}" alt="${data.title}" style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--glass-border);" />
+          <a href="${data.liveDemo || data.github}" target="_blank" rel="noopener noreferrer" title="Click to view live app">
+            <img src="${data.image}" alt="${data.title}" style="width: 100%; height: 260px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid var(--glass-border);" />
+          </a>
           
           <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.7;">${data.description}</p>
           
@@ -394,11 +397,12 @@ function initProjectModals() {
 
           <h4 style="font-size: 1.1rem; margin-bottom: 0.8rem;">Technologies Used:</h4>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem;">
-            ${data.tech.map(t => `<span style="padding: 0.3rem 0.8rem; background: rgba(99,102,241,0.15); color: var(--accent-primary); border-radius: 6px; font-weight: 600; font-size: 0.85rem;">${t}</span>`).join('')}
+            ${data.tech.map(t => `<span style="padding: 0.3rem 0.8rem; background: rgba(32,178,170,0.15); color: var(--accent-primary); border-radius: 6px; font-weight: 600; font-size: 0.85rem;">${t}</span>`).join('')}
           </div>
 
-          <div style="display: flex; gap: 1rem;">
-            <a href="${data.github}" target="_blank" class="btn btn-primary btn-sm"><i class="fab fa-github"></i> View GitHub Repository</a>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            ${data.liveDemo ? `<a href="${data.liveDemo}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm floating-btn-style"><i class="fas fa-external-link-alt"></i> Launch Live Application</a>` : ''}
+            <a href="${data.github}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm"><i class="fab fa-github"></i> View GitHub Repository</a>
             <button class="btn btn-outline btn-sm modal-close-trigger"><i class="fas fa-times"></i> Close Window</button>
           </div>
         </div>

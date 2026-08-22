@@ -834,20 +834,29 @@ a {
   margin-bottom: 1.5rem;
 }
 
-.cp-tags {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
+.floating-badge-style {
+  animation: floatBadge 3s ease-in-out infinite;
+  box-shadow: 0 5px 20px rgba(32, 178, 170, 0.4);
+  border: 1px solid var(--accent-primary) !important;
 }
 
-.cp-tag {
-  padding: 0.25rem 0.6rem;
-  border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.05);
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.floating-btn-style {
+  box-shadow: 0 4px 20px rgba(32, 178, 170, 0.4);
+  transition: all var(--transition-normal);
+}
+
+.floating-btn-style:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(32, 178, 170, 0.6);
+}
+
+.project-title a:hover {
+  color: var(--accent-secondary) !important;
 }
 
 /* PROJECTS SECTION */
