@@ -364,7 +364,7 @@ const projectDetailsData = {
       'Implemented real-time world location radar, celestial sun/moon cycle tracking, and detailed hourly weather metrics.',
       'Constructed automated algorithms to handle geolocation JSON string parsing payload arrays natively inside low-level data blocks.'
     ],
-    github: 'https://github.com/Pramod3570955',
+    github: 'https://github.com/Pramod3570955/https-github.com-PramodShah-SkyGuru',
     image: 'assets/images/weather_app.jpg'
   }
 };
