@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSkillsFilter();
   initAnimatedCounters();
   initProjectModals();
+  initCertModals();
   initResumeModal();
   initContactForm();
 });
@@ -425,6 +426,41 @@ function initProjectModals() {
       if (e.target === modalOverlay) modalOverlay.classList.remove('active');
     });
   }
+}
+
+/* --------------------------------------------------------------------------
+   7.1. Certificate Lightbox Modal
+   -------------------------------------------------------------------------- */
+function initCertModals() {
+  const certModal = document.getElementById('cert-modal');
+  const certCloseBtn = document.getElementById('cert-modal-close');
+  const certImg = document.getElementById('cert-modal-img');
+  const certTitle = document.getElementById('cert-modal-title');
+  const certDesc = document.getElementById('cert-modal-desc');
+
+  if (!certModal) return;
+
+  document.querySelectorAll('.cert-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const imgEl = card.querySelector('.cert-img');
+      const titleEl = card.querySelector('h3');
+      const descEl = card.querySelector('.cert-content p');
+
+      if (imgEl && certImg) certImg.src = imgEl.src;
+      if (titleEl && certTitle) certTitle.textContent = titleEl.textContent;
+      if (descEl && certDesc) certDesc.textContent = descEl.textContent;
+
+      certModal.classList.add('active');
+    });
+  });
+
+  if (certCloseBtn) {
+    certCloseBtn.addEventListener('click', () => certModal.classList.remove('active'));
+  }
+
+  certModal.addEventListener('click', (e) => {
+    if (e.target === certModal) certModal.classList.remove('active');
+  });
 }
 
 /* --------------------------------------------------------------------------

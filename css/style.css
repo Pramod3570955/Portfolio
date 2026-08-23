@@ -982,6 +982,7 @@ a {
   display: flex;
   flex-direction: column;
   transition: all var(--transition-normal);
+  cursor: pointer;
 }
 
 .cert-card:hover {
@@ -1008,6 +1009,31 @@ a {
 }
 
 .cert-card:hover .cert-img {
+  transform: scale(1.06);
+}
+
+.cert-zoom-hint {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(4, 19, 24, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--transition-fast);
+}
+
+.cert-card:hover .cert-zoom-hint {
+  background: var(--gradient-main);
+  color: white;
+  border-color: transparent;
   transform: scale(1.05);
 }
 
