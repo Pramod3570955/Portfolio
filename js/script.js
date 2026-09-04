@@ -496,29 +496,63 @@ function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const name = document.getElementById('form-name').value.trim();
     const email = document.getElementById('form-email').value.trim();
+    const subject = document.getElementById('form-subject').value.trim() || 'Portfolio Contact Inquiry';
     const message = document.getElementById('form-message').value.trim();
 
     if (!name || !email || !message) {
-      showToast('Please fill out all fields in the contact form.', 'error');
+      showToast('Please fill out all required fields in the contact form.', 'error');
       return;
     }
 
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
-    submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Transmitting Message...`;
+    submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending Message...`;
 
-    setTimeout(() => {
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/pm3570955@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          subject: subject,
+          message: message,
+          _subject: `New Portfolio Message from ${name}: ${subject}`,
+          _template: 'table',
+          _captcha: 'false'
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success === 'true' || data.success === true) {
+        form.reset();
+        showToast(`Thank you ${name}! Your message has been sent to Pramod's email.`, 'success');
+      } else if (data.message && data.message.toLowerCase().includes('activation')) {
+        form.reset();
+        showToast(`Thank you ${name}! One-time activation required: check pm3570955@gmail.com to confirm.`, 'info');
+      } else {
+        throw new Error(data.message || 'Error transmitting message');
+      }
+    } catch (err) {
+      console.warn('FormSubmit error, offering mailto fallback:', err);
+      showToast(`Notice: Opening your email client to deliver message to pm3570955@gmail.com`, 'info');
+      setTimeout(() => {
+        window.location.href = `mailto:pm3570955@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Hi Pramod,\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+      }, 1200);
+    } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalText;
-      form.reset();
-      showToast(`Thank you ${name}! Your message has been transmitted successfully.`, 'success');
-    }, 1200);
+    }
   });
 }
 

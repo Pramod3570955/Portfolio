@@ -706,25 +706,30 @@
 
         <!-- Contact Form -->
         <div class="card">
-          <form class="contact-form" id="contact-form">
+          <form class="contact-form" id="contact-form" action="https://formsubmit.co/pm3570955@gmail.com" method="POST">
+            <!-- FormSubmit Configuration -->
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="New Portfolio Contact Message!">
+
             <div class="form-group">
               <label for="form-name">Your Full Name</label>
-              <input type="text" id="form-name" class="form-control" placeholder="e.g. John Doe" required>
+              <input type="text" id="form-name" name="name" class="form-control" placeholder="e.g. John Doe" required>
             </div>
 
             <div class="form-group">
               <label for="form-email">Email Address</label>
-              <input type="email" id="form-email" class="form-control" placeholder="john@example.com" required>
+              <input type="email" id="form-email" name="email" class="form-control" placeholder="john@example.com" required>
             </div>
 
             <div class="form-group">
               <label for="form-subject">Subject</label>
-              <input type="text" id="form-subject" class="form-control" placeholder="Inquiry regarding Internship / Project">
+              <input type="text" id="form-subject" name="subject" class="form-control" placeholder="Inquiry regarding Internship / Project">
             </div>
 
             <div class="form-group">
               <label for="form-message">Your Message</label>
-              <textarea id="form-message" class="form-control" placeholder="Hi Pramod, I came across your portfolio..." required></textarea>
+              <textarea id="form-message" name="message" class="form-control" placeholder="Hi Pramod, I came across your portfolio..." required></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width: 100%;">
