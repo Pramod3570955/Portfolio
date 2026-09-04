@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCertModals();
   initResumeModal();
   initContactForm();
+  initAIRobotAssistant();
 });
 
 /* --------------------------------------------------------------------------
@@ -577,3 +578,532 @@ function showToast(msg, type = 'success') {
     setTimeout(() => toast.remove(), 400);
   }, 4000);
 }
+
+/* --------------------------------------------------------------------------
+   10. AI Robot Assistant (ChatGPT-Style Interactive Portfolio Guide)
+   -------------------------------------------------------------------------- */
+function initAIRobotAssistant() {
+  const triggerBtn = document.getElementById('ai-robot-trigger');
+  const chatWidget = document.getElementById('ai-chat-widget');
+  const closeBtn = document.getElementById('ai-chat-close-btn');
+  const minimizeBtn = document.getElementById('ai-chat-minimize-btn');
+  const resetBtn = document.getElementById('ai-chat-reset-btn');
+  const messagesContainer = document.getElementById('ai-chat-messages');
+  const inputForm = document.getElementById('ai-chat-input-form');
+  const inputField = document.getElementById('ai-chat-input');
+  const sendBtn = document.getElementById('ai-chat-send-btn');
+  const typingIndicator = document.getElementById('ai-typing-indicator');
+  const tooltip = document.getElementById('ai-robot-tooltip');
+  const suggestionChips = document.querySelectorAll('.ai-chip');
+
+  if (!triggerBtn || !chatWidget) return;
+
+  let isChatOpen = false;
+  let hasInteracted = false;
+
+  // Toggle chat widget
+  function toggleChat(open) {
+    isChatOpen = typeof open === 'boolean' ? open : !isChatOpen;
+    if (isChatOpen) {
+      chatWidget.classList.add('active');
+      triggerBtn.classList.add('active');
+      triggerBtn.setAttribute('aria-expanded', 'true');
+      if (tooltip) tooltip.classList.add('hidden');
+      setTimeout(() => inputField && inputField.focus(), 300);
+      if (!hasInteracted) {
+        hasInteracted = true;
+        renderWelcomeMessage();
+      }
+    } else {
+      chatWidget.classList.remove('active');
+      triggerBtn.classList.remove('active');
+      triggerBtn.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  triggerBtn.addEventListener('click', () => toggleChat());
+  if (closeBtn) closeBtn.addEventListener('click', () => toggleChat(false));
+  if (minimizeBtn) minimizeBtn.addEventListener('click', () => toggleChat(false));
+
+  // Reset conversation
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      messagesContainer.innerHTML = '';
+      renderWelcomeMessage();
+      showToast("Conversation cleared", "info");
+    });
+  }
+
+  // Keyboard accessibility
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isChatOpen) {
+      toggleChat(false);
+    }
+  });
+
+  // Welcome Message
+  function renderWelcomeMessage() {
+    const welcomeHtml = `
+      <p>Hi! I'm <strong>Pramod's AI Assistant</strong> 🤖</p>
+      <p>Ask me anything about Pramod, his skills, projects, experience, or portfolio. You can also ask me to navigate directly to any section!</p>
+    `;
+    appendMessage('assistant', welcomeHtml, [
+      { text: '⚡ Who is Pramod?', query: 'Who is Pramod?' },
+      { text: '💼 Projects', query: 'Show me projects' },
+      { text: '🛠️ Skills', query: 'What skills does Pramod have?' },
+      { text: '📄 Resume', query: 'Show resume' }
+    ]);
+  }
+
+  // Suggestion Chips Click
+  suggestionChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const query = chip.getAttribute('data-query');
+      if (query) handleUserQuery(query);
+    });
+  });
+
+  // Handle Input Submission
+  if (inputForm) {
+    inputForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const query = inputField.value.trim();
+      if (!query) return;
+      handleUserQuery(query);
+    });
+  }
+
+  // Process User Query
+  function handleUserQuery(query) {
+    appendMessage('user', escapeHtml(query));
+    inputField.value = '';
+    inputField.disabled = true;
+    sendBtn.disabled = true;
+
+    // Show typing indicator & scroll
+    if (typingIndicator) {
+      typingIndicator.style.display = 'flex';
+      messagesContainer.appendChild(typingIndicator);
+      scrollChatToBottom();
+    }
+
+    // Dynamic delay for realistic AI feel
+    const delay = Math.min(800, Math.max(450, query.length * 15));
+
+    setTimeout(() => {
+      if (typingIndicator) typingIndicator.style.display = 'none';
+
+      const response = generateAIResponse(query);
+      appendMessage('assistant', response.text, response.actions);
+
+      inputField.disabled = false;
+      sendBtn.disabled = false;
+      inputField.focus();
+      scrollChatToBottom();
+
+      // Execute automated navigation if requested
+      if (response.autoNavigate) {
+        handleAutoNavigation(response.autoNavigate);
+      }
+    }, delay);
+  }
+
+  // Append message bubble
+  function appendMessage(sender, contentHtml, actions = []) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `ai-msg ai-msg-${sender}`;
+
+    if (sender === 'assistant') {
+      msgDiv.innerHTML = `
+        <div class="ai-msg-avatar">
+          <img src="assets/images/ai_robot.jpg" alt="AI Robot">
+        </div>
+        <div class="ai-msg-bubble">
+          ${contentHtml}
+          ${renderActionsHtml(actions)}
+        </div>
+      `;
+    } else {
+      msgDiv.innerHTML = `
+        <div class="ai-msg-bubble">
+          ${contentHtml}
+        </div>
+      `;
+    }
+
+    messagesContainer.appendChild(msgDiv);
+    bindActionButtons(msgDiv);
+    scrollChatToBottom();
+  }
+
+  function renderActionsHtml(actions) {
+    if (!actions || actions.length === 0) return '';
+    const btns = actions.map(act => {
+      if (act.query) {
+        return `<button class="ai-action-btn ai-action-query" data-query="${escapeHtml(act.query)}">${act.text}</button>`;
+      } else if (act.scroll) {
+        return `<button class="ai-action-btn ai-action-scroll" data-target="${act.scroll}">${act.text}</button>`;
+      } else if (act.resume) {
+        return `<button class="ai-action-btn ai-action-resume">${act.text}</button>`;
+      } else if (act.url) {
+        return `<a href="${act.url}" target="_blank" rel="noopener noreferrer" class="ai-action-btn">${act.text}</a>`;
+      }
+      return '';
+    }).join('');
+
+    return `<div class="ai-msg-actions">${btns}</div>`;
+  }
+
+  function bindActionButtons(container) {
+    container.querySelectorAll('.ai-action-query').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const query = btn.getAttribute('data-query');
+        if (query) handleUserQuery(query);
+      });
+    });
+
+    container.querySelectorAll('.ai-action-scroll').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-target');
+        if (target) {
+          smoothScrollTo(target);
+          if (window.innerWidth < 600) toggleChat(false);
+        }
+      });
+    });
+
+    container.querySelectorAll('.ai-action-resume').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const resumeModal = document.getElementById('resume-modal');
+        if (resumeModal) {
+          resumeModal.classList.add('active');
+          if (window.innerWidth < 600) toggleChat(false);
+        }
+      });
+    });
+  }
+
+  function scrollChatToBottom() {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  function smoothScrollTo(targetSelector) {
+    const el = document.querySelector(targetSelector);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function handleAutoNavigation(navType) {
+    setTimeout(() => {
+      if (navType === 'projects') smoothScrollTo('#projects');
+      else if (navType === 'skills') smoothScrollTo('#skills');
+      else if (navType === 'contact') smoothScrollTo('#contact');
+      else if (navType === 'about') smoothScrollTo('#about');
+      else if (navType === 'competitive') smoothScrollTo('#competitive');
+      else if (navType === 'certifications') smoothScrollTo('#certifications');
+      else if (navType === 'resume') {
+        const resumeModal = document.getElementById('resume-modal');
+        if (resumeModal) resumeModal.classList.add('active');
+      }
+    }, 400);
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ------------------------------------------------------------------------
+  // AI Knowledge Base & Natural Language Query Processor
+  // ------------------------------------------------------------------------
+  function generateAIResponse(rawQuery) {
+    const q = rawQuery.toLowerCase().trim();
+
+    // 1. Navigation Commands
+    if (q.includes('show me projects') || q.includes('go to projects') || q === 'projects' || q === 'project' || q.includes('view projects')) {
+      return {
+        text: `Navigating you directly to Pramod's <strong>Featured Projects</strong> section! Here you can find LifeSaver AI, Building Construction Planner, and SkyGuru Weather.`,
+        actions: [
+          { text: '📂 Projects Section', scroll: '#projects' },
+          { text: '🚀 Launch LifeSaver AI', url: 'https://lifesaver-ai-532111624600.asia-southeast1.run.app/' }
+        ],
+        autoNavigate: 'projects'
+      };
+    }
+
+    if (q.includes('show me skills') || q.includes('go to skills') || q === 'skills' || q.includes('view skills')) {
+      return {
+        text: `Scrolling down to the <strong>Technical Skills</strong> section! You can explore Pramod's proficiency in Java, C++, React, SQL, AWS, and DSA.`,
+        actions: [
+          { text: '🛠️ Skills Section', scroll: '#skills' }
+        ],
+        autoNavigate: 'skills'
+      };
+    }
+
+    if (q.includes('contact pramod') || q.includes('go to contact') || q === 'contact' || q.includes('send message')) {
+      return {
+        text: `Taking you to the <strong>Contact</strong> section! You can send an email to <strong>pm3570955@gmail.com</strong> or fill out the direct contact form.`,
+        actions: [
+          { text: '📬 Contact Form', scroll: '#contact' },
+          { text: '📧 Send Email', url: 'mailto:pm3570955@gmail.com' }
+        ],
+        autoNavigate: 'contact'
+      };
+    }
+
+    if (q.includes('show resume') || q.includes('download resume') || q.includes('view resume') || q === 'resume' || q === 'cv') {
+      return {
+        text: `Opening Pramod's <strong>Interactive Resume Modal</strong> for you! You can read all academic details or click <em>Print / Save as PDF</em>.`,
+        actions: [
+          { text: '📄 Open Resume Modal', resume: true }
+        ],
+        autoNavigate: 'resume'
+      };
+    }
+
+    // 2. Greetings
+    if (/^(hi|hello|hey|greetings|hola|namaste|sup|yo)\b/i.test(q)) {
+      return {
+        text: `Hello! 👋 I'm Pramod's personal AI Assistant. How can I help you today? I can answer questions about Pramod's <strong>skills</strong>, <strong>projects</strong>, <strong>200+ LeetCode solutions</strong>, or guide you through his portfolio!`,
+        actions: [
+          { text: '⚡ Who is Pramod?', query: 'Who is Pramod?' },
+          { text: '💼 His Projects', query: 'Show me his projects' },
+          { text: '🛠️ Top Skills', query: 'What skills does Pramod have?' }
+        ]
+      };
+    }
+
+    // 3. Who is Pramod / About / Background / Location
+    if (q.includes('who is pramod') || q.includes('who are you') || q.includes('about') || q.includes('bio') || q.includes('profile') || q.includes('tell me about')) {
+      return {
+        text: `<strong>Pramod Kumar Shah Sudi</strong> is an ambitious Computer Science & Engineering undergraduate at <strong>Parul University</strong> (Current CGPA: <strong>8.09 / 10.00</strong>) based in <strong>Vadodara, Gujarat, India</strong>.<br><br>
+        He is a dedicated problem solver with over <strong>200+ algorithmic solutions on LeetCode</strong>, passionate about architecting scalable full-stack web applications, cloud backends with AWS, and low-level C++ parsing engines.`,
+        actions: [
+          { text: '👤 About Section', scroll: '#about' },
+          { text: '💼 View Projects', scroll: '#projects' },
+          { text: '📄 View Resume', resume: true }
+        ]
+      };
+    }
+
+    // 4. LifeSaver AI Specific
+    if (q.includes('lifesaver') || q.includes('healthcare') || q.includes('vibe')) {
+      return {
+        text: `<strong>LifeSaver AI</strong> is an AI-driven smart task rescuing and focus platform built by Pramod!<br><br>
+        • <strong>Tech Stack</strong>: React, JavaScript, AWS Cloud, RESTful APIs.<br>
+        • <strong>Key Features</strong>: Features an empathetic AI coach named "Vibe", a real-time Urgency Heat Gauge, dynamic task urgency scoring, and cloud auto-scaling.<br>
+        • <strong>Live Demo</strong>: Deployed and running live on Google Cloud!`,
+        actions: [
+          { text: '🚀 Launch LifeSaver AI ↗', url: 'https://lifesaver-ai-532111624600.asia-southeast1.run.app/' },
+          { text: '📂 Projects Section', scroll: '#projects' }
+        ]
+      };
+    }
+
+    // 5. SkyGuru Weather Specific
+    if (q.includes('skyguru') || q.includes('weather')) {
+      return {
+        text: `<strong>SkyGuru Weather</strong> is an advanced weather analytics platform engineered by Pramod!<br><br>
+        • <strong>Tech Stack</strong>: React, C++, REST APIs, JSON Parsing.<br>
+        • <strong>Architecture</strong>: Multi-tiered system linking React frontend hooks directly to low-level C++ parsing computation metrics for high performance.<br>
+        • <strong>Features</strong>: Live radar, celestial Sun & Moon cycle tracking, and hourly/7-day forecast analytics.`,
+        actions: [
+          { text: '⭐ View GitHub Repo ↗', url: 'https://github.com/Pramod3570955/https-github.com-PramodShah-SkyGuru' },
+          { text: '📂 Projects Section', scroll: '#projects' }
+        ]
+      };
+    }
+
+    // 6. Construction Building Software Specific
+    if (q.includes('construction') || q.includes('building planner') || q.includes('erp')) {
+      return {
+        text: `<strong>Building Construction Planner</strong> is an enterprise management software tailored for construction sites and multi-project operations.<br><br>
+        • <strong>Tech Stack</strong>: Java, MySQL, OOP Principles.<br>
+        • <strong>Features</strong>: Executive Command Dashboard with EVM S-Curve cost analytics, risk matrix heatmaps, material stock reorder alerts, and localized inventory tracking.`,
+        actions: [
+          { text: '📂 Projects Section', scroll: '#projects' }
+        ]
+      };
+    }
+
+    // 7. General Projects
+    if (q.includes('project') || q.includes('work') || q.includes('built') || q.includes('apps') || q.includes('application')) {
+      return {
+        text: `Pramod has engineered 3 core featured projects:<br><br>
+        1. <strong>LifeSaver AI</strong> (Hackathon Project): AI-driven task rescuing & focus coach with "Vibe" AI assistant.<br>
+        2. <strong>Building Construction Planner</strong> (Academic Project): Enterprise Java & MySQL ERP with EVM S-Curve analytics.<br>
+        3. <strong>SkyGuru Weather</strong> (Personal Project): C++ computation engine linked to a modern React frontend with live radar.`,
+        actions: [
+          { text: '🚀 Launch LifeSaver AI ↗', url: 'https://lifesaver-ai-532111624600.asia-southeast1.run.app/' },
+          { text: '📂 Explore Projects Section', scroll: '#projects' }
+        ]
+      };
+    }
+
+    // 8. Java & OOP
+    if (q.includes('java') || q.includes('oop')) {
+      return {
+        text: `Pramod possesses strong expertise in <strong>Java</strong> and <strong>Object-Oriented Programming (OOP)</strong>:<br><br>
+        • Applied OOP paradigms to design enterprise solutions like the <strong>Building Construction Planner</strong>.<br>
+        • Implements complex algorithms, trees, arrays, and two-pointer tracking questions on LeetCode utilizing Java.<br>
+        • Proficient in secure database integration with MySQL and multi-threaded business logic.`,
+        actions: [
+          { text: '🛠️ View Skills', scroll: '#skills' },
+          { text: '🏆 LeetCode Stats', scroll: '#competitive' }
+        ]
+      };
+    }
+
+    // 9. DSA & Competitive Programming (LeetCode, HackerRank, Coding Ninjas)
+    if (q.includes('dsa') || q.includes('leetcode') || q.includes('algorithm') || q.includes('hackerrank') || q.includes('coding') || q.includes('problem')) {
+      return {
+        text: `Pramod is a proven algorithmic problem solver:<br><br>
+        • <strong>LeetCode</strong>: Solved <strong>200+ questions</strong> focusing on Arrays, Two Pointers, Trees, and Strings in Java and C++.<br>
+        • <strong>HackerRank</strong>: 50+ logic proficiency problems with multi-star milestone rankings.<br>
+        • <strong>Coding Ninjas</strong>: Active participant in competitive hackathons and coding arenas, delivering structured solutions within runtime limits.`,
+        actions: [
+          { text: '⚡ View LeetCode Profile ↗', url: 'https://leetcode.com/u/Pramod955' },
+          { text: '🏆 Coding Stats Section', scroll: '#competitive' }
+        ]
+      };
+    }
+
+    // 10. SQL & Databases
+    if (q.includes('sql') || q.includes('mysql') || q.includes('database')) {
+      return {
+        text: `Pramod is proficient in <strong>SQL and MySQL</strong>:<br><br>
+        • Programmed secure relational database schemas to handle complex tabular structures, transactions, and resource allocations.<br>
+        • Implemented structural data validation modules to cross-verify resource quantities and inventory tracking.`,
+        actions: [
+          { text: '🛠️ View Skills', scroll: '#skills' }
+        ]
+      };
+    }
+
+    // 11. React, JavaScript & Web Development
+    if (q.includes('react') || q.includes('javascript') || q.includes('js') || q.includes('web') || q.includes('full-stack') || q.includes('frontend') || q.includes('html') || q.includes('css')) {
+      return {
+        text: `Pramod is experienced in modern <strong>Full-Stack Web Development</strong>:<br><br>
+        • <strong>React</strong>: Component architecture, custom hooks, state management, and modern responsive design.<br>
+        • <strong>JavaScript (ES6+)</strong>: Asynchronous programming, DOM manipulation, and dynamic client experiences.<br>
+        • <strong>API Integration</strong>: RESTful APIs with minimized network latency, WebSocket telemetry, and cloud infrastructure.`,
+        actions: [
+          { text: '🛠️ Skills Section', scroll: '#skills' },
+          { text: '📂 View Web Projects', scroll: '#projects' }
+        ]
+      };
+    }
+
+    // 12. C++
+    if (q.includes('c++') || q.includes('cpp')) {
+      return {
+        text: `Pramod uses <strong>C++</strong> for both competitive programming and high-performance computing:<br><br>
+        • Solved algorithmic tracking problems utilizing C++ standard library data structures.<br>
+        • Built the backend computation engine for <strong>SkyGuru Weather</strong> to parse geolocation JSON string payloads natively in low-level data blocks.`,
+        actions: [
+          { text: '⭐ SkyGuru Repo ↗', url: 'https://github.com/Pramod3570955/https-github.com-PramodShah-SkyGuru' },
+          { text: '🛠️ View Skills', scroll: '#skills' }
+        ]
+      };
+    }
+
+    // 13. Cloud & AWS
+    if (q.includes('cloud') || q.includes('aws') || q.includes('amazon') || q.includes('deploy')) {
+      return {
+        text: `Pramod has foundational expertise in <strong>Amazon Web Services (AWS)</strong>:<br><br>
+        • Architected deployment blueprints using AWS cloud components to guarantee application stability and auto-scaling.<br>
+        • Deployed cloud services for AI telemetry web applications.`,
+        actions: [
+          { text: '🛠️ Skills Section', scroll: '#skills' }
+        ]
+      };
+    }
+
+    // 14. Software Testing & QA
+    if (q.includes('testing') || q.includes('qa') || q.includes('quality') || q.includes('unit test')) {
+      return {
+        text: `Pramod has completed formal training and holds credentials in <strong>Software Testing & QA</strong> from Simplilearn SkillUp:<br><br>
+        • Unit testing frameworks and test case design.<br>
+        • Quality Assurance lifecycle, edge case discovery, and bug validation logic.`,
+        actions: [
+          { text: '📜 View Certifications', scroll: '#certifications' }
+        ]
+      };
+    }
+
+    // 15. All Skills Overview
+    if (q.includes('skill') || q.includes('technolog') || q.includes('stack') || q.includes('language') || q.includes('tools')) {
+      return {
+        text: `Here is a summary of Pramod's technical skill set:<br><br>
+        • <strong>Languages</strong>: Java, C++, JavaScript, SQL<br>
+        • <strong>Web Development</strong>: React, Full Stack, HTML5, CSS3, REST API Integration<br>
+        • <strong>Cloud & DB</strong>: Amazon Web Services (AWS), MySQL<br>
+        • <strong>Core Competencies</strong>: Data Structures & Algorithms (200+ LeetCode), Software Testing, Object-Oriented Programming (OOP)`,
+        actions: [
+          { text: '🛠️ View Skills Section', scroll: '#skills' }
+        ]
+      };
+    }
+
+    // 16. Education & Academic Background
+    if (q.includes('education') || q.includes('college') || q.includes('university') || q.includes('parul') || q.includes('degree') || q.includes('b.tech') || q.includes('cgpa') || q.includes('school')) {
+      return {
+        text: `Here is Pramod's academic journey:<br><br>
+        🎓 <strong>B.Tech in Computer Science & Engineering</strong><br>
+        • <em>Parul University</em>, Vadodara, Gujarat, India (Expected: May 2028)<br>
+        • <strong>Current CGPA: 8.09 / 10.00</strong><br><br>
+        🏫 <strong>10+2 in Computer Engineering</strong><br>
+        • <em>Shree Mills Secondary School</em>, Biratnagar, Nepal (Graduated 2024)<br>
+        • <strong>Academic Score: 83%</strong>`,
+        actions: [
+          { text: '🎓 Education Timeline', scroll: '#about' },
+          { text: '📄 View Resume', resume: true }
+        ]
+      };
+    }
+
+    // 17. Certifications & Hackathons
+    if (q.includes('certif') || q.includes('credential') || q.includes('hackathon') || q.includes('vibe2ship') || q.includes('simplilearn')) {
+      return {
+        text: `Pramod holds verified credentials & achievements:<br><br>
+        🏆 <strong>Vibe2Ship Hackathon Certificate</strong>: India's Biggest Vibe Coding Hackathon by Coding Ninjas in collaboration with <strong>Google for Developers</strong>.<br><br>
+        📜 <strong>Introduction to Software Testing</strong>: Professional Certificate of Completion by <strong>Simplilearn SkillUp</strong> (Code: 8850332).`,
+        actions: [
+          { text: '📜 View Certifications Section', scroll: '#certifications' }
+        ]
+      };
+    }
+
+    // 18. Contact / Hire / Phone / Email / Socials
+    if (q.includes('contact') || q.includes('email') || q.includes('phone') || q.includes('hire') || q.includes('reach') || q.includes('linkedin') || q.includes('github') || q.includes('message')) {
+      return {
+        text: `You can reach out to Pramod through any of these channels:<br><br>
+        • 📧 <strong>Email</strong>: <a href="mailto:pm3570955@gmail.com" style="color:var(--accent-secondary);">pm3570955@gmail.com</a><br>
+        • 📞 <strong>Phone</strong>: +91 8210245186<br>
+        • 📍 <strong>Location</strong>: Vadodara, Gujarat, India<br>
+        • 💼 <strong>LinkedIn</strong>: <a href="https://linkedin.com/in/pramod-shah-6b8b983b0" target="_blank" rel="noopener noreferrer" style="color:var(--accent-secondary);">linkedin.com/in/pramod-shah-6b8b983b0</a><br>
+        • 🐙 <strong>GitHub</strong>: <a href="https://github.com/Pramod3570955" target="_blank" rel="noopener noreferrer" style="color:var(--accent-secondary);">github.com/Pramod3570955</a>`,
+        actions: [
+          { text: '📬 Open Contact Form', scroll: '#contact' },
+          { text: '📧 Email Pramod', url: 'mailto:pm3570955@gmail.com' }
+        ]
+      };
+    }
+
+    // Default Fallback Response
+    return {
+      text: `I'm specifically trained to answer questions about <strong>Pramod's portfolio</strong>, <strong>technical skills</strong>, <strong>projects</strong>, and <strong>experience</strong>.<br><br>
+      Here are some topics you can explore:`,
+      actions: [
+        { text: '⚡ Who is Pramod?', query: 'Who is Pramod?' },
+        { text: '💼 View Projects', query: 'Show me projects' },
+        { text: '🛠️ Top Skills', query: 'What skills does Pramod have?' },
+        { text: '☕ Java & DSA', query: 'Tell me about his Java & DSA skills' },
+        { text: '📄 Resume', query: 'Show resume' },
+        { text: '📬 Contact Info', query: 'How can I contact him?' }
+      ]
+    };
+  }
+}
+

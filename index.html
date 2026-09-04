@@ -865,6 +865,95 @@
     </div>
   </div>
 
+  <!-- =========================================================================
+       AI ROBOT ASSISTANT (CHATGPT-STYLE)
+       ========================================================================= -->
+  <div class="ai-assistant-container" id="ai-assistant-container">
+    <!-- Floating Robot Trigger Button -->
+    <button class="ai-robot-trigger" id="ai-robot-trigger" aria-label="Open Pramod's AI Assistant" title="Chat with Pramod's AI Assistant">
+      <div class="ai-robot-halo"></div>
+      <div class="ai-robot-avatar-box">
+        <img src="assets/images/ai_robot.jpg" alt="AI Robot Assistant" class="ai-robot-avatar-img">
+        <span class="ai-robot-status-dot" title="Online"></span>
+      </div>
+      <!-- Tooltip Bubble -->
+      <div class="ai-robot-tooltip" id="ai-robot-tooltip">
+        <span>Ask Pramod's AI</span>
+        <span>✨</span>
+      </div>
+    </button>
+
+    <!-- ChatGPT-Style Chat Window -->
+    <div class="ai-chat-widget" id="ai-chat-widget" role="dialog" aria-modal="false" aria-label="Pramod AI Chat Assistant">
+      <!-- Chat Header -->
+      <div class="ai-chat-header">
+        <div class="ai-chat-header-info">
+          <div class="ai-chat-header-avatar">
+            <img src="assets/images/ai_robot.jpg" alt="AI Assistant">
+            <span class="ai-header-status-dot"></span>
+          </div>
+          <div>
+            <div class="ai-chat-title">Pramod's AI <span class="ai-chat-version-badge">v2.0</span></div>
+            <div class="ai-chat-status">Online • Instant Portfolio Guide</div>
+          </div>
+        </div>
+        <div class="ai-chat-header-actions">
+          <button class="ai-header-btn" id="ai-chat-reset-btn" title="Clear conversation" aria-label="Clear conversation">
+            <i class="fas fa-redo-alt"></i>
+          </button>
+          <button class="ai-header-btn" id="ai-chat-minimize-btn" title="Minimize chat" aria-label="Minimize chat">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button class="ai-header-btn" id="ai-chat-close-btn" title="Close chat" aria-label="Close chat">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Suggestion Chips Container -->
+      <div class="ai-quick-suggestions" id="ai-quick-suggestions">
+        <button class="ai-chip" data-query="Who is Pramod?">⚡ Who is Pramod?</button>
+        <button class="ai-chip" data-query="Show me his projects">💼 Show Projects</button>
+        <button class="ai-chip" data-query="What skills does Pramod have?">🛠️ Skills & Tech</button>
+        <button class="ai-chip" data-query="Tell me about his Java & DSA skills">☕ Java & DSA</button>
+        <button class="ai-chip" data-query="Can I view his resume?">📄 View Resume</button>
+        <button class="ai-chip" data-query="How can I contact him?">📬 Contact Info</button>
+      </div>
+
+      <!-- Chat Messages Scroll Area -->
+      <div class="ai-chat-messages" id="ai-chat-messages" aria-live="polite">
+        <!-- Messages rendered dynamically via JS -->
+      </div>
+
+      <!-- Typing Indicator -->
+      <div class="ai-typing-indicator" id="ai-typing-indicator" style="display: none;">
+        <div class="ai-typing-avatar">
+          <img src="assets/images/ai_robot.jpg" alt="AI Robot">
+        </div>
+        <div class="ai-typing-bubble">
+          <span class="ai-typing-dot"></span>
+          <span class="ai-typing-dot"></span>
+          <span class="ai-typing-dot"></span>
+        </div>
+      </div>
+
+      <!-- Chat Input Area -->
+      <form class="ai-chat-input-form" id="ai-chat-input-form">
+        <input 
+          type="text" 
+          id="ai-chat-input" 
+          class="ai-chat-input" 
+          placeholder="Ask me anything about Pramod..." 
+          autocomplete="off" 
+          aria-label="Message Pramod's AI Assistant"
+        />
+        <button type="submit" class="ai-chat-send-btn" id="ai-chat-send-btn" aria-label="Send message">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
   <!-- TOAST CONTAINER -->
   <div class="toast-container" id="toast-container"></div>
 
