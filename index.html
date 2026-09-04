@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=2.2">
 </head>
 <body>
 
@@ -869,19 +869,108 @@
        AI ROBOT ASSISTANT (CHATGPT-STYLE)
        ========================================================================= -->
   <div class="ai-assistant-container" id="ai-assistant-container">
-    <!-- Floating Robot Trigger Button -->
-    <button class="ai-robot-trigger" id="ai-robot-trigger" aria-label="Open Pramod's AI Assistant" title="Chat with Pramod's AI Assistant">
+    <!-- Floating 3D AI Robot Character Trigger -->
+    <div class="ai-robot-trigger" id="ai-robot-trigger" role="button" tabindex="0" aria-label="Open Pramod's AI Assistant" title="Click to chat with Pramod's AI Assistant">
       <div class="ai-robot-halo"></div>
-      <div class="ai-robot-avatar-box">
-        <img src="assets/images/ai_robot.jpg" alt="AI Robot Assistant" class="ai-robot-avatar-img">
-        <span class="ai-robot-status-dot" title="Online"></span>
-      </div>
-      <!-- Tooltip Bubble -->
+
+      <!-- Interactive Speech Bubble -->
       <div class="ai-robot-tooltip" id="ai-robot-tooltip">
-        <span>Ask Pramod's AI</span>
-        <span>✨</span>
+        <span class="ai-tooltip-greeting">Hi! I'm Pramod's AI 🤖</span>
+        <span class="ai-tooltip-sub">Click to chat!</span>
+        <button class="ai-tooltip-close" id="ai-tooltip-close" title="Dismiss" aria-label="Dismiss">&times;</button>
       </div>
-    </button>
+
+      <!-- Animated 3D Futuristic Robot Character Figure -->
+      <div class="ai-robot-character" id="ai-robot-character">
+        <svg class="ai-robot-svg" viewBox="0 0 100 125" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="45%" stop-color="#e2e8f0"/>
+              <stop offset="100%" stop-color="#94a3b8"/>
+            </linearGradient>
+            <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#20b2aa"/>
+              <stop offset="100%" stop-color="#0b2830"/>
+            </linearGradient>
+            <linearGradient id="visorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#041318"/>
+              <stop offset="100%" stop-color="#0f2b33"/>
+            </linearGradient>
+            <linearGradient id="coreGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#48cae4"/>
+              <stop offset="100%" stop-color="#20b2aa"/>
+            </linearGradient>
+            <radialGradient id="thrusterGlow" cx="50%" cy="0%" r="70%">
+              <stop offset="0%" stop-color="#48cae4" stop-opacity="0.9"/>
+              <stop offset="50%" stop-color="#20b2aa" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#20b2aa" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="robotGlow" x="-25%" y="-25%" width="150%" height="150%">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- Antigravity Thruster Glow / Jets -->
+          <g class="robot-thruster">
+            <ellipse cx="50" cy="106" rx="14" ry="4" fill="#20b2aa" opacity="0.7" filter="url(#robotGlow)"/>
+            <polygon points="40,106 60,106 50,122" fill="url(#thrusterGlow)" class="thruster-flame"/>
+          </g>
+
+          <!-- Robot Torso & Chassis -->
+          <g class="robot-torso">
+            <path d="M35,68 Q25,82 32,98 Q50,105 68,98 Q75,82 65,68 Z" fill="url(#accentGrad)" stroke="#20b2aa" stroke-width="1.2"/>
+            <path d="M38,70 Q30,82 36,94 Q50,100 64,94 Q70,82 62,70 Z" fill="url(#bodyGrad)"/>
+            
+            <!-- Floating Levitation Arms -->
+            <ellipse cx="23" cy="80" rx="4.5" ry="9" fill="url(#bodyGrad)" stroke="#20b2aa" stroke-width="1" class="robot-arm robot-arm-left"/>
+            <ellipse cx="77" cy="80" rx="4.5" ry="9" fill="url(#bodyGrad)" stroke="#20b2aa" stroke-width="1" class="robot-arm robot-arm-right"/>
+            
+            <!-- Chest Arc Reactor -->
+            <circle cx="50" cy="83" r="7.5" fill="#041318" stroke="#20b2aa" stroke-width="1.5"/>
+            <circle cx="50" cy="83" r="5" fill="url(#coreGlow)" class="robot-core-pulse" filter="url(#robotGlow)"/>
+            <circle cx="50" cy="83" r="2" fill="#ffffff"/>
+          </g>
+
+          <!-- Robot Head Group (articulated tracking) -->
+          <g class="robot-head-group" id="robot-head-group">
+            <ellipse cx="50" cy="67" rx="10" ry="3.5" fill="#20b2aa" opacity="0.8"/>
+
+            <!-- Side Antennas / Sensors -->
+            <rect x="17" y="36" width="5" height="14" rx="2.5" fill="url(#accentGrad)" stroke="#20b2aa" stroke-width="0.8"/>
+            <circle cx="19.5" cy="34" r="2.5" fill="#48cae4" filter="url(#robotGlow)" class="robot-beacon"/>
+            <rect x="78" y="36" width="5" height="14" rx="2.5" fill="url(#accentGrad)" stroke="#20b2aa" stroke-width="0.8"/>
+            <circle cx="80.5" cy="34" r="2.5" fill="#48cae4" filter="url(#robotGlow)" class="robot-beacon"/>
+
+            <!-- Helmet Shell -->
+            <rect x="22" y="16" width="56" height="48" rx="22" fill="url(#bodyGrad)" stroke="#e2e8f0" stroke-width="1.2"/>
+            <path d="M42,16 Q50,13 58,16" fill="none" stroke="#20b2aa" stroke-width="2.5" stroke-linecap="round"/>
+
+            <!-- Glossy Visor Screen -->
+            <rect x="28" y="24" width="44" height="32" rx="14" fill="url(#visorGrad)" stroke="#20b2aa" stroke-width="1.5" class="robot-visor"/>
+            <path d="M34,26 Q50,28 64,30 Q60,26 40,26 Z" fill="#ffffff" opacity="0.3"/>
+
+            <!-- Animated LED Eyes (look-around & blinking) -->
+            <g class="robot-eyes-group" id="robot-eyes-group">
+              <g class="robot-eye robot-eye-left">
+                <ellipse cx="40" cy="38" rx="4" ry="5.5" fill="#48cae4" filter="url(#robotGlow)"/>
+                <circle cx="41.2" cy="36.5" r="1.5" fill="#ffffff"/>
+              </g>
+              <g class="robot-eye robot-eye-right">
+                <ellipse cx="60" cy="38" rx="4" ry="5.5" fill="#48cae4" filter="url(#robotGlow)"/>
+                <circle cx="61.2" cy="36.5" r="1.5" fill="#ffffff"/>
+              </g>
+              <path d="M45,46 Q50,50 55,46" fill="none" stroke="#48cae4" stroke-width="1.8" stroke-linecap="round" filter="url(#robotGlow)"/>
+            </g>
+          </g>
+        </svg>
+        <span class="ai-robot-status-dot" title="AI Assistant Online"></span>
+      </div>
+    </div>
 
     <!-- ChatGPT-Style Chat Window -->
     <div class="ai-chat-widget" id="ai-chat-widget" role="dialog" aria-modal="false" aria-label="Pramod AI Chat Assistant">
@@ -958,6 +1047,6 @@
   <div class="toast-container" id="toast-container"></div>
 
   <!-- Main JavaScript File -->
-  <script src="js/script.js"></script>
+  <script src="js/script.js?v=2.2"></script>
 </body>
 </html>

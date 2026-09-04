@@ -622,8 +622,53 @@ function initAIRobotAssistant() {
   }
 
   triggerBtn.addEventListener('click', () => toggleChat());
+  triggerBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleChat();
+    }
+  });
+
   if (closeBtn) closeBtn.addEventListener('click', () => toggleChat(false));
   if (minimizeBtn) minimizeBtn.addEventListener('click', () => toggleChat(false));
+
+  // Tooltip dismiss button
+  const tooltipClose = document.getElementById('ai-tooltip-close');
+  if (tooltipClose && tooltip) {
+    tooltipClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      tooltip.classList.add('hidden');
+    });
+  }
+
+  // Interactive 3D Robot Eye & Head Tracking towards cursor
+  const robotHead = document.getElementById('robot-head-group');
+  const robotEyes = document.getElementById('robot-eyes-group');
+  if (robotHead || robotEyes) {
+    window.addEventListener('mousemove', (e) => {
+      const rect = triggerBtn.getBoundingClientRect();
+      const robotCenterX = rect.left + rect.width / 2;
+      const robotCenterY = rect.top + rect.height / 2;
+      const dx = e.clientX - robotCenterX;
+      const dy = e.clientY - robotCenterY;
+      const angle = Math.atan2(dy, dx);
+      const dist = Math.min(Math.sqrt(dx * dx + dy * dy), 450);
+      const intensity = dist / 450;
+      
+      const moveX = Math.cos(angle) * 3.5 * intensity;
+      const moveY = Math.sin(angle) * 3 * intensity;
+
+      if (robotEyes) {
+        robotEyes.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        robotEyes.style.transition = 'transform 0.1s ease-out';
+      }
+      if (robotHead) {
+        robotHead.style.transform = `rotate(${moveX * 0.9}deg)`;
+        robotHead.style.transformOrigin = '50px 67px';
+        robotHead.style.transition = 'transform 0.15s ease-out';
+      }
+    });
+  }
 
   // Reset conversation
   if (resetBtn) {
